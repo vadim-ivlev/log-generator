@@ -1,0 +1,13 @@
+version: '3'
+services:
+
+    log-generator:
+        image: vadimivlev/log-generator:latest
+        container_name: log-generator
+        restart: always
+        environment: 
+            - MAX_DELAY=5000
+            - MAX_RECORDS=10
+            - LOG_FILE=logrus.log
+        volumes: 
+            - ./logs:/app/logs
