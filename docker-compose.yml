@@ -1,13 +1,19 @@
 version: '3'
 services:
 
+
+    # генерирует тестовый лог для проверки работоспособности системы
     log-generator:
         image: vadimivlev/log-generator:latest
         container_name: log-generator
-        restart: always
+        restart: unless-stopped
         environment: 
+            # максимальная задержка добавления записей в лог
             - MAX_DELAY=5000
+            # максимальное количество добавленных записей лога перед тем,
+            # как он будет перепорожден
             - MAX_RECORDS=10
+            # имя файла лога внутри директории назначенной в параметре volumes:
             - LOG_FILE=logrus.log
         volumes: 
             - ./logs:/app/logs

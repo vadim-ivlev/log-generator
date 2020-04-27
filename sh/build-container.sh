@@ -28,7 +28,3 @@ echo "push the docker image"
 docker login
 docker push vadimivlev/log-generator:latest
 
-
-# echo "копируем docker-compose-frontend.yml в ../auth-proxy-front" 
-# mkdir ../auth-proxy-front
-# cp docker-compose-frontend.yml ../auth-proxy-front/docker-compose.yml
