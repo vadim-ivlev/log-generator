@@ -22,11 +22,14 @@ docker-compose.yml
         environment: 
             # максимальная задержка добавления записей в лог
             - MAX_DELAY=5000
-            # максимальное количество добавленных записей лога перед тем,
-            # как он будет перепорожден
+            # максимальное количество добавленных записей лога перед ротацией
             - MAX_RECORDS=10
             # имя файла лога внутри директории назначенной в параметре volumes:
             - LOG_FILE=logrus.log
+            # адрес elasticsearch для прямой записи логов
+            - ELASTICSEARCH_URL=http://elk:9200
+            # хост elasticsearch для прямой записи логов
+            - ELASTICSEARCH_HOST=elk
         volumes: 
             - ./logs:/app/logs
 ```

@@ -15,7 +15,9 @@ import (
 	"strconv"
 	"time"
 
+	"github.com/elastic/go-elasticsearch/v7"
 	"github.com/sirupsen/logrus"
+	"gopkg.in/go-extras/elogrus.v7"
 )
 
 // имя файла лога
@@ -27,14 +29,24 @@ var maxRecords int64 = 10
 // максимальное время задержки между записями в лог
 var maxSleepingTime int64 = 5000
 
+// elasticsearch  URL
+var elasticsearchURL = "http://localhost:9200"
+
+// elasticsearch  host
+var elasticsearchHost = "localhost"
+
 // логгер для вывода на экран
 var stdoutLog = logrus.New()
 
 // логгер для вывода в файл
 var fileLog = logrus.New()
 
+// флаг, добавлен ли elasticsearch хуг
+var elasticHookAdded = false
+
 func main() {
-	// считываем переменные окружения
+	// считываем переменные окружения, где установлены расположение файла лога,
+	// максимальное количество записей, и максимальная задержка между записями в лог.
 	readEnvironmentVariables()
 
 	// счетчик записей в логе
@@ -73,7 +85,8 @@ func rotateLog(recordCounter int64) {
 	}
 }
 
-// считываем переменные окружения
+// считываем переменные окружения, где установлены расположение файла лога,
+// максимальное количество записей, и максимальная задержка между записями в лог.
 func readEnvironmentVariables() {
 	s, ok := os.LookupEnv("MAX_DELAY")
 	if ok {
@@ -90,6 +103,18 @@ func readEnvironmentVariables() {
 			logFileName = s
 		}
 	}
+	s, ok = os.LookupEnv("ELASTICSEARCH_URL")
+	if ok {
+		if s != "" {
+			elasticsearchURL = s
+		}
+	}
+	s, ok = os.LookupEnv("ELASTICSEARCH_HOST")
+	if ok {
+		if s != "" {
+			elasticsearchHost = s
+		}
+	}
 	s, ok = os.LookupEnv("MAX_RECORDS")
 	if ok {
 		t, err := strconv.ParseInt(s, 10, 64)
@@ -103,16 +128,16 @@ func readEnvironmentVariables() {
 
 // Инициализируем логгеры
 func initLogger() {
-	fmt := "2006-01-02T15:04:05.999Z"
-	stdoutLog.SetFormatter(&logrus.JSONFormatter{TimestampFormat: fmt})
-	fileLog.SetFormatter(&logrus.JSONFormatter{TimestampFormat: fmt})
+	addElasticHookToLogger(stdoutLog)
+
+	timeFormat := "2006-01-02T15:04:05.999Z"
+	stdoutLog.SetFormatter(&logrus.JSONFormatter{TimestampFormat: timeFormat})
+	fileLog.SetFormatter(&logrus.JSONFormatter{TimestampFormat: timeFormat})
 
 	// Output to stdout instead of the default stderr
 	// logrus.SetOutput(os.Stdout)
 	stdoutLog.Out = os.Stdout
 
-	// fmt.Println("file=", logFile)
-	// var err error
 	// Устанавливаем вывод в файл
 	logFile, err := os.OpenFile("./logs/"+logFileName, os.O_CREATE|os.O_WRONLY|os.O_APPEND, 0666)
 	if err == nil {
@@ -122,6 +147,7 @@ func initLogger() {
 		logrus.Info("Вывод в файл невозможен, используем stdout")
 		fileLog.Out = os.Stdout
 	}
+
 	// Only log the warning severity or above.
 	// logrus.SetLevel(logrus.WarnLevel)
 }
@@ -136,7 +162,8 @@ func addLineToLog(counter int64, flightNumber int32, delay time.Duration) {
 		"status":        choose(delay > threshold, "DELAYED", "INFO"),
 		"wait":          int64(delay / 1000000),
 	}
-
+	// если задержка больше порогового значения логируем ошибку,
+	// в противном случае логируем сообщение
 	if delay > threshold {
 		fileLog.WithFields(fields).Error(msg)
 		stdoutLog.WithFields(fields).Error(msg)
@@ -145,6 +172,32 @@ func addLineToLog(counter int64, flightNumber int32, delay time.Duration) {
 		stdoutLog.WithFields(fields).Info(msg)
 	}
 
+}
+
+// addElasticHookToLogger добавляем хуг к логгеру для вывода в Эластик
+func addElasticHookToLogger(logger *logrus.Logger) {
+	// Если хуг был уже добавлен выходим
+	if elasticHookAdded {
+		return
+	}
+	client, err := elasticsearch.NewClient(elasticsearch.Config{
+		Addresses: []string{elasticsearchURL},
+	})
+	if err != nil {
+		fmt.Println("elasticsearch.NewClient error:", err)
+		return
+	}
+	// hook, err := elogrus.NewAsyncElasticHook(client, "localhost", logrus.DebugLevel, "logrus")
+	hook, err := elogrus.NewAsyncElasticHook(client, elasticsearchHost, logrus.GetLevel(), "logrus")
+	if err != nil {
+		fmt.Println("elogrus.NewAsyncElasticHook error:", err)
+		return
+	}
+	// possibility to remove hooks
+	// https://github.com/sirupsen/logrus/issues/701
+	logger.Hooks.Add(hook)
+	elasticHookAdded = true
+	fmt.Println("Hook to elasticsearch is added.")
 }
 
 // Возвращает одну из строк в зависимости от условия
