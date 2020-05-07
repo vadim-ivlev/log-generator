@@ -24,9 +24,9 @@ docker run --rm -it -v "$PWD":/usr/src/myapp -w /usr/src/myapp -e CGO_ENABLED=0 
 
 
 echo "build a docker image"
-docker build -t vadimivlev/log-generator:latest . 
+docker build -t vadimivlev/log-generator:0.0.1 . 
 
 echo "push the docker image" 
 docker login
-docker push vadimivlev/log-generator:latest
+docker push vadimivlev/log-generator:0.0.1
 

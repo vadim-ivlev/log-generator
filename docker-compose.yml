@@ -4,7 +4,7 @@ services:
 
     # генерирует тестовый лог для проверки работоспособности системы
     log-generator:
-        image: vadimivlev/log-generator:latest
+        image: vadimivlev/log-generator:0.0.1
         container_name: log-generator-dev
         restart: unless-stopped
         environment: 
