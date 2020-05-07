@@ -52,7 +52,7 @@ docker-compose.yml
 
 4. Запуск программы в докере
 
-        sh/build-container.sh
+        docker-compose up -d && docker-compose logs -f 
 
 5. Пуш если все в порядке
 

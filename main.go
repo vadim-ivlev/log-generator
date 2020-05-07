@@ -44,6 +44,9 @@ var fileLog = logrus.New()
 // флаг, добавлен ли elasticsearch хуг
 var elasticHookAdded = false
 
+// Строка сегодняшней даты
+var todayDate = ""
+
 func main() {
 	// считываем переменные окружения, где установлены расположение файла лога,
 	// максимальное количество записей, и максимальная задержка между записями в лог.
@@ -128,6 +131,9 @@ func readEnvironmentVariables() {
 
 // Инициализируем логгеры
 func initLogger() {
+	// генерируем новую дату и stdoutLog ели необходимо
+	checkDateAndRecreateLogger()
+	// добавляем вывод в Эластик к stdoutLog
 	addElasticHookToLogger(stdoutLog)
 
 	timeFormat := "2006-01-02T15:04:05.999Z"
@@ -189,7 +195,7 @@ func addElasticHookToLogger(logger *logrus.Logger) {
 	}
 	// hook, err := elogrus.NewAsyncElasticHook(client, "localhost", logrus.DebugLevel, "logrus")
 	fmt.Println(elasticURL, elasticHost)
-	hook, err := elogrus.NewAsyncElasticHook(client, elasticHost, logrus.GetLevel(), "logrus")
+	hook, err := elogrus.NewAsyncElasticHook(client, elasticHost, logrus.GetLevel(), "log-generator-logrus-"+todayDate)
 	if err != nil {
 		fmt.Println("elogrus.NewAsyncElasticHook error 1:", err)
 		return
@@ -207,4 +213,24 @@ func choose(condition bool, s1, s2 interface{}) interface{} {
 		return s1
 	}
 	return s2
+}
+
+// Проверяет сегодняшнюю дату и если она не совпадает с глобальным значением todayDate,
+// регенерирует todayDate, stdoutLog и устанавливает elasticHookAdded = false.
+// Эти действия выполняются для того, чтобы ротировать индексы Эластик,
+// каждый день записывая логи logrus в новый индекс именованный в соответствии с текущей датой:
+// log-generator-logrus-2020-01-02.
+// В конечном счете это делается для удобного удаления старых индексов Эластик и чтобы
+// привести в соответствие имена индексов в соответствие с соглашением на именования для filebeat.
+func checkDateAndRecreateLogger() {
+	now := time.Now()
+	nowDate := now.Format("2006-01-02")
+	// если дата не изменилась выходим
+	if nowDate == todayDate {
+		return
+	}
+	todayDate = nowDate
+	fmt.Println("Today date is " + todayDate)
+	stdoutLog = logrus.New()
+	elasticHookAdded = false
 }

@@ -1,6 +1,8 @@
-{"counter":31,"flight_number":6,"level":"info","msg":"Рейс 6 задерживается на 3.244s","status":"INFO","time":"2020-05-07T00:36:57.781Z","wait":3244}
-{"counter":32,"flight_number":6,"level":"info","msg":"Рейс 6 задерживается на 2.599s","status":"INFO","time":"2020-05-07T00:37:01.029Z","wait":2599}
-{"counter":33,"flight_number":9,"level":"info","msg":"Рейс 9 задерживается на 3.796s","status":"INFO","time":"2020-05-07T00:37:03.608Z","wait":3796}
-{"counter":34,"flight_number":5,"level":"info","msg":"Рейс 5 задерживается на 1.788s","status":"INFO","time":"2020-05-07T00:37:07.406Z","wait":1788}
-{"counter":35,"flight_number":8,"level":"info","msg":"Рейс 8 задерживается на 3.808s","status":"INFO","time":"2020-05-07T00:37:09.202Z","wait":3808}
-{"counter":36,"flight_number":4,"level":"info","msg":"Рейс 4 задерживается на 3.902s","status":"INFO","time":"2020-05-07T00:37:13.015Z","wait":3902}
+{"counter":2101,"flight_number":0,"level":"info","msg":"Рейс 0 задерживается на 486ms","status":"INFO","time":"2020-05-07T11:41:38.59Z","wait":486}
+{"counter":2102,"flight_number":9,"level":"info","msg":"Рейс 9 задерживается на 3.134s","status":"INFO","time":"2020-05-07T11:41:39.08Z","wait":3134}
+{"counter":2103,"flight_number":3,"level":"info","msg":"Рейс 3 задерживается на 3.388s","status":"INFO","time":"2020-05-07T11:41:42.218Z","wait":3388}
+{"counter":2104,"flight_number":1,"level":"info","msg":"Рейс 1 задерживается на 425ms","status":"INFO","time":"2020-05-07T11:41:45.609Z","wait":425}
+{"counter":2105,"flight_number":7,"level":"info","msg":"Рейс 7 задерживается на 2.602s","status":"INFO","time":"2020-05-07T11:41:46.038Z","wait":2602}
+{"counter":2106,"flight_number":1,"level":"info","msg":"Рейс 1 задерживается на 717ms","status":"INFO","time":"2020-05-07T11:41:48.647Z","wait":717}
+{"counter":2107,"flight_number":2,"level":"info","msg":"Рейс 2 задерживается на 1.462s","status":"INFO","time":"2020-05-07T11:41:49.367Z","wait":1462}
+{"counter":2108,"flight_number":9,"level":"error","msg":"Рейс 9 задерживается на 4.334s","status":"DELAYED","time":"2020-05-07T11:41:50.836Z","wait":4334}
