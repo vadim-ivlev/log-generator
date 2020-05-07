@@ -1,8 +1,7 @@
-{"counter":2101,"flight_number":0,"level":"info","msg":"Рейс 0 задерживается на 486ms","status":"INFO","time":"2020-05-07T11:41:38.59Z","wait":486}
-{"counter":2102,"flight_number":9,"level":"info","msg":"Рейс 9 задерживается на 3.134s","status":"INFO","time":"2020-05-07T11:41:39.08Z","wait":3134}
-{"counter":2103,"flight_number":3,"level":"info","msg":"Рейс 3 задерживается на 3.388s","status":"INFO","time":"2020-05-07T11:41:42.218Z","wait":3388}
-{"counter":2104,"flight_number":1,"level":"info","msg":"Рейс 1 задерживается на 425ms","status":"INFO","time":"2020-05-07T11:41:45.609Z","wait":425}
-{"counter":2105,"flight_number":7,"level":"info","msg":"Рейс 7 задерживается на 2.602s","status":"INFO","time":"2020-05-07T11:41:46.038Z","wait":2602}
-{"counter":2106,"flight_number":1,"level":"info","msg":"Рейс 1 задерживается на 717ms","status":"INFO","time":"2020-05-07T11:41:48.647Z","wait":717}
-{"counter":2107,"flight_number":2,"level":"info","msg":"Рейс 2 задерживается на 1.462s","status":"INFO","time":"2020-05-07T11:41:49.367Z","wait":1462}
-{"counter":2108,"flight_number":9,"level":"error","msg":"Рейс 9 задерживается на 4.334s","status":"DELAYED","time":"2020-05-07T11:41:50.836Z","wait":4334}
+{"counter":2111,"flight_number":7,"level":"error","msg":"Рейс 7 задерживается на 4.529s","status":"DELAYED","time":"2020-05-07T11:42:00.666Z","wait":4529}
+{"counter":2112,"flight_number":6,"level":"info","msg":"Рейс 6 задерживается на 238ms","status":"INFO","time":"2020-05-07T11:42:05.198Z","wait":238}
+{"counter":2113,"flight_number":7,"level":"error","msg":"Рейс 7 задерживается на 4.711s","status":"DELAYED","time":"2020-05-07T11:42:05.439Z","wait":4711}
+{"counter":2114,"flight_number":7,"level":"info","msg":"Рейс 7 задерживается на 2.524s","status":"INFO","time":"2020-05-07T11:42:10.136Z","wait":2524}
+{"counter":2115,"flight_number":1,"level":"error","msg":"Рейс 1 задерживается на 4.648s","status":"DELAYED","time":"2020-05-07T11:42:12.666Z","wait":4648}
+{"counter":2116,"flight_number":5,"level":"info","msg":"Рейс 5 задерживается на 807ms","status":"INFO","time":"2020-05-07T11:42:17.317Z","wait":807}
+{"counter":2117,"flight_number":3,"level":"info","msg":"Рейс 3 задерживается на 2.662s","status":"INFO","time":"2020-05-07T11:42:18.134Z","wait":2662}
