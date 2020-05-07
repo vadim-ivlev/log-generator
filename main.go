@@ -30,10 +30,10 @@ var maxRecords int64 = 10
 var maxSleepingTime int64 = 5000
 
 // elasticsearch  URL
-var elasticsearchURL = "http://localhost:9200"
+var elasticURL = "http://localhost:9200"
 
 // elasticsearch  host
-var elasticsearchHost = "localhost"
+var elasticHost = "localhost"
 
 // логгер для вывода на экран
 var stdoutLog = logrus.New()
@@ -103,16 +103,16 @@ func readEnvironmentVariables() {
 			logFileName = s
 		}
 	}
-	s, ok = os.LookupEnv("ELASTICSEARCH_URL")
+	s, ok = os.LookupEnv("ELASTIC_URL")
 	if ok {
 		if s != "" {
-			elasticsearchURL = s
+			elasticURL = s
 		}
 	}
-	s, ok = os.LookupEnv("ELASTICSEARCH_HOST")
+	s, ok = os.LookupEnv("ELASTIC_HOST")
 	if ok {
 		if s != "" {
-			elasticsearchHost = s
+			elasticHost = s
 		}
 	}
 	s, ok = os.LookupEnv("MAX_RECORDS")
@@ -181,16 +181,17 @@ func addElasticHookToLogger(logger *logrus.Logger) {
 		return
 	}
 	client, err := elasticsearch.NewClient(elasticsearch.Config{
-		Addresses: []string{elasticsearchURL},
+		Addresses: []string{elasticURL},
 	})
 	if err != nil {
 		fmt.Println("elasticsearch.NewClient error:", err)
 		return
 	}
 	// hook, err := elogrus.NewAsyncElasticHook(client, "localhost", logrus.DebugLevel, "logrus")
-	hook, err := elogrus.NewAsyncElasticHook(client, elasticsearchHost, logrus.GetLevel(), "logrus")
+	fmt.Println(elasticURL, elasticHost)
+	hook, err := elogrus.NewAsyncElasticHook(client, elasticHost, logrus.GetLevel(), "logrus")
 	if err != nil {
-		fmt.Println("elogrus.NewAsyncElasticHook error:", err)
+		fmt.Println("elogrus.NewAsyncElasticHook error 1:", err)
 		return
 	}
 	// possibility to remove hooks

@@ -27,22 +27,33 @@ docker-compose.yml
             # имя файла лога внутри директории назначенной в параметре volumes:
             - LOG_FILE=logrus.log
             # адрес elasticsearch для прямой записи логов
-            - ELASTICSEARCH_URL=http://elk:9200
+            - ELASTIC_URL=http://elk:9200
             # хост elasticsearch для прямой записи логов
-            - ELASTICSEARCH_HOST=elk
+            - ELASTIC_HOST=elk
         volumes: 
             - ./logs:/app/logs
 ```
 
-Запуск программы
-----------
 
-    go run main.go 
+Порядок разработки
+=============
 
-Чтобы программа сработала директория logs/ где генерируются логи должна уже существовать.
+1. Модифицируем код.
 
-Построение контейнера
---------------
+2. Запуск программы
 
-    sh/build-container.sh
+        go run main.go 
 
+    Чтобы программа сработала директория logs/ где генерируются логи должна уже существовать.
+
+3. Построение контейнера
+
+        sh/build-container.sh
+
+4. Запуск программы в докере
+
+        sh/build-container.sh
+
+5. Пуш если все в порядке
+
+        sh/push.sh

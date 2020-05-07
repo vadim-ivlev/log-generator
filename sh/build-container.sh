@@ -8,6 +8,8 @@
 echo "гасим docker-compose"
 docker-compose down
 
+rm log-generator 
+
 
 # компилируем. линкуем статически под линукс
 # env CGO_ENABLED=0 GOOS=linux GOARCH=amd64 go build -a  .
