@@ -136,9 +136,16 @@ func initLogger() {
 	// добавляем вывод в Эластик к stdoutLog
 	addElasticHookToLogger(stdoutLog)
 
+	// Java формат штампа даты времени, какой принят в Эластик по умолчанию.
 	timeFormat := "2006-01-02T15:04:05.999Z"
+
+	// Предпочитаем JSON формат вместо текстового, что удобно для анализа логов в Эластик.
 	stdoutLog.SetFormatter(&logrus.JSONFormatter{TimestampFormat: timeFormat})
 	fileLog.SetFormatter(&logrus.JSONFormatter{TimestampFormat: timeFormat})
+	
+	// Текстовый формат логов
+	// stdoutLog.SetFormatter(&logrus.TextFormatter{FullTimestamp:true, TimestampFormat: timeFormat})
+	// fileLog.SetFormatter(&logrus.TextFormatter{FullTimestamp:true, TimestampFormat: timeFormat})
 
 	// Output to stdout instead of the default stderr
 	// logrus.SetOutput(os.Stdout)
@@ -162,6 +169,7 @@ func initLogger() {
 func addLineToLog(counter int64, flightNumber int32, delay time.Duration) {
 	threshold := time.Duration(maxSleepingTime) * 1000000 * 4 / 5
 	msg := fmt.Sprintf("Рейс %d задерживается на %v", flightNumber, delay)
+
 	fields := logrus.Fields{
 		"counter":       counter,
 		"flight_number": flightNumber,
