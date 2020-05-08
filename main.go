@@ -193,7 +193,6 @@ func addElasticHookToLogger(logger *logrus.Logger) {
 		fmt.Println("elasticsearch.NewClient error:", err)
 		return
 	}
-	// hook, err := elogrus.NewAsyncElasticHook(client, "localhost", logrus.DebugLevel, "logrus")
 	fmt.Println(elasticURL, elasticHost)
 	hook, err := elogrus.NewAsyncElasticHook(client, elasticHost, logrus.GetLevel(), "log-generator-logrus-"+todayDate)
 	if err != nil {
